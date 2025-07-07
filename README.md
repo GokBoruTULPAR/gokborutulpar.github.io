@@ -1,0 +1,1 @@
+# gokborutulpar.github.io
