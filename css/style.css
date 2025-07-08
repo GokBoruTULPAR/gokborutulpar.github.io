@@ -1,0 +1,413 @@
+/* Bu dosya, index.html içindeki <style> etiketinden taşınan tüm CSS kodunu içerecektir. */
+
+:root {
+  --primary-color: #0a0f1c;
+  --secondary-color: #121c30;
+  --accent-color: #00ffe7;
+  --light-bg: #0f1626;
+  --white: #ffffff;
+  --shadow: 0 0 10px rgba(0, 255, 231, 0.2);
+  --glass-effect: rgba(255, 255, 255, 0.1); /* Bu satır olmalı */
+  --typewriter-width: 0px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  color: #ccc;
+  scroll-behavior: smooth;
+  /* Daha yumuşak font kenarları için */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Particles.js container */
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: var(--primary-color);
+  z-index: -1;
+  opacity: 0.8; /* Hafif bir opaklık */
+}
+
+/* Main content container */
+.main-content {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 50px; /* Footer ile içeriğin çakışmaması için */
+}
+
+header {
+  background-color: rgba(10, 15, 28, 0.8);
+  color: var(--accent-color);
+  text-align: center;
+  padding: 30px 10px;
+  box-shadow: var(--shadow);
+  position: relative; /* Z-index için */
+  z-index: 100;
+}
+
+.header .logo img {
+  height: 169px; /* Varsayılan değer */
+  max-width: 90%; /* Mobil uyumluluk */
+  height: auto;
+}
+
+
+.glass {
+  background: var(--glass-effect); /* Yarı saydam beyaz arka plan */
+  backdrop-filter: blur(10px); /* Arka planı bulanıklaştır */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Hafif beyaz kenarlık */
+  border-radius: 12px; /* Köşeler yuvarlak */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+}
+
+nav {
+  background-color: rgba(18, 28, 48, 0.8);
+  padding: 15px 0;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: var(--shadow);
+}
+
+nav a {
+  color: var(--white);
+  margin: 0 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+  background-color: rgba(0, 255, 231, 0.1);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  transform: scale(1.05);
+}
+
+section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgba(15, 22, 38, 0.8);
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 255, 231, 0.1); /* Hafif border */
+  transition: all 0.3s ease-in-out; /* Hover efekti için */
+}
+
+section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0, 255, 231, 0.3);
+}
+
+.btn-glow {
+  padding: 10px 20px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #0ff;
+  transition: 0.3s;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px #0ff, 0 0 60px #0ff;
+}
+h2 {
+  text-align: center; 
+  margin-bottom: 40px;
+  font-size: 2.5em;
+  color: var(--accent-color);
+  position: relative; 
+  text-shadow: 0 0 10px var(--accent-color);
+ 
+}
+
+
+h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+  transform: translateX(-50%);
+}
+
+
+h2.typewriter { 
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--white);
+  animation: typing 3s steps(16, end) forwards,
+             blink .75s step-end infinite;
+  
+  display: block; 
+  margin: 0 auto; 
+  
+  
+  width: 0; 
+ 
+}
+
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: var(--typewriter-width) } 
+}
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+.drone-features,
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px; /* Kartlar arası boşluk */
+}
+
+.feature-card,
+.team-card {
+  /* Glassmorphism Efekti Özellikleri */
+  background: var(--glass-effect); /* Yarı saydam arka plan */
+  backdrop-filter: blur(10px);    /* Arka planı bulanıklaştır */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Beyaz kenarlık */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), var(--shadow); /* Hem standart hem de mevcut shadow */
+
+  /* Geri kalan mevcut stilleriniz */
+  border-radius: 12px; /* Tekrar etmekte fayda var */
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-grow: 1;
+  max-width: calc(33% - 25px);
+  box-sizing: border-box;
+}
+
+.feature-card:hover,
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 255, 231, 0.4);
+}
+
+.feature-card h3,
+.team-card h3 {
+  color: var(--accent-color);
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.feature-card h3::before,
+.team-card h3::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 60px;
+  height: 30px;
+  background: url('https://www.svgrepo.com/show/21749/circuit.svg') no-repeat center;
+  background-size: contain;
+  transform: translateX(-50%);
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.team-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 10px rgba(0, 255, 231, 0.5); /* Avatar çevresine parlaklık */
+}
+
+.contact a {
+  color: var(--accent-color);
+  text-decoration: none;
+  margin: 0 10px;
+  display: inline-block;
+}
+
+.contact img {
+  width: 30px;
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.contact a:hover img {
+  transform: scale(1.2);
+}
+
+footer {
+  background-color: rgba(10, 15, 28, 0.8);
+  color: var(--white);
+  text-align: center;
+  padding: 25px 10px;
+  margin-top: 60px;
+  box-shadow: var(--shadow);
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 100;
+}
+
+#menu-toggle {
+  display: none; /* Varsayılan olarak gizli */
+  background: none;
+  color: white;
+  font-size: 28px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  transition: transform 0.3s ease; /* Hamburger ikonu için animasyon */
+}
+
+#menu-toggle:active {
+  transform: scale(0.9);
+}
+
+/* MEDYA SORGULARI - MOBİL İÇİN İYİLEŞTİRMELER */
+@media (max-width: 768px) {
+  /* Başlık font boyutu */
+  h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+  }
+
+  /* Ana içerik padding'i */
+  section {
+    padding: 40px 15px;
+    margin-bottom: 20px;
+  }
+
+  /* Mobil Menü Gösterimi */
+  #menu-toggle {
+    display: block; /* Hamburger menüyü göster */
+  }
+
+  nav {
+    padding: 0; /* Nav'ın kendi padding'ini kaldır */
+    background-color: transparent; /* Mobil menü açıkken nav'ın arka planını şeffaf yap */
+    position: static; /* sticky olmasın */
+    box-shadow: none; /* Gölgesini kaldır */
+  }
+
+  .nav-links {
+    display: none; /* Varsayılan olarak menü kapalı */
+    flex-direction: column;
+    background-color: var(--secondary-color); /* Menü açıldığında arka plan */
+    position: fixed;
+    top: 0; /* Ekranın en üstüne sabitle */
+    right: -100%; /* Başlangıçta ekran dışı */
+    width: 70%;
+    height: 100vh; /* Tam ekran yüksekliği */
+    padding-top: 80px; /* Hamburger ikonunun altından başlasın */
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+    z-index: 998; /* Toggle'dan bir alt katman */
+    transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Yaylı açılış animasyonu */
+  }
+
+  .nav-links.show {
+    display: flex;
+    right: 0; /* Menüyü ekrana getir */
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 255, 231, 0.1); /* Menü linkleri arasına çizgi */
+    width: 100%;
+    text-align: center;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .nav-links a:last-child {
+    border-bottom: none; /* Son linkte çizgi olmasın */
+  }
+
+  .nav-links a:hover {
+    background-color: rgba(0, 255, 231, 0.2);
+    transform: none; /* Mobil menüde hover scale olmasın */
+    box-shadow: none;
+  }
+
+  /* Kartlar için mobil düzen */
+  .drone-features,
+  .team-members {
+    flex-direction: column; /* Tek sütun halinde diz */
+    align-items: center; /* Ortala */
+    gap: 20px; /* Kartlar arası boşluğu azalt */
+  }
+
+  .feature-card,
+  .team-card {
+    width: 90%; /* Ekran genişliğinin %90'ını kapla */
+    max-width: 400px; /* Çok büyük ekranlarda (tablet dikey) aşırı genişlemesin */
+    margin: 0 auto; /* Ortala */
+    padding: 18px; /* Padding'i azalt */
+  }
+
+  /* Sosyal medya ikonları */
+  .social-icons {
+    padding-top: 15px; /* Üstten boşluk ekle */
+  }
+}
+
+/* Sosyal medya ikonları */
+.social-icons a {
+  display: inline-block;
+  margin: 0 10px;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-icons a img {
+  width: 30px;
+  height: 30px;
+  filter: grayscale(60%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover efekti: renk açılacak, büyüyecek, gölge ve titreşim */
+.social-icons a:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.2) rotate(2deg);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  animation: shake 0.3s ease-in-out;
+  animation-iteration-count: 1;
+}
+
+/* Titreşim animasyonu */
+@keyframes shake {
+  0% { transform: scale(1.2) rotate(2deg); }
+  25% { transform: scale(1.2) rotate(-2deg); }
+  50% { transform: scale(1.2) rotate(2deg); }
+  75% { transform: scale(1.2) rotate(-2deg); }
+  100% { transform: scale(1.2) rotate(2deg); }
+}
