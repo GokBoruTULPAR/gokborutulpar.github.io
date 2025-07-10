@@ -105,8 +105,8 @@
             color: var(--white);
             margin-top: 15px;
         }
-        .data-card p.smoke-true {
-            color: #ff4500;
+        .data-card p.fire-true {
+            color: #ff4500; /* Kırmızı renk ateş algılandığında */
             animation: pulse 1s infinite alternate;
         }
         @keyframes pulse {
@@ -129,16 +129,28 @@
         </div>
         <div class="data-display">
             <div class="data-card">
-                <h3>Sıcaklık</h3>
-                <p id="temperatureData">--.- °C</p>
+                <h3>Duman/Ateş Algılama</h3>
+                <p id="fireDetectedData">Durum Bilinmiyor</p>
             </div>
             <div class="data-card">
-                <h3>Nem Oranı</h3>
-                <p id="humidityData">--.- %</p>
+                <h3>Alarm Kategorisi</h3>
+                <p id="alarmCategoryData">--</p>
             </div>
             <div class="data-card">
-                <h3>Duman Algılama</h3>
-                <p id="smokeData">Durum Bilinmiyor</p>
+                <h3>Güvenirlik</h3>
+                <p id="confidenceData">-- %</p>
+            </div>
+            <div class="data-card">
+                <h3>Algılama Zamanı</h3>
+                <p id="detectionTimeData">Bekleniyor...</p>
+            </div>
+            <div class="data-card">
+                <h3>Enlem (Lat)</h3>
+                <p id="latitudeData">--.------</p>
+            </div>
+            <div class="data-card">
+                <h3>Boylam (Lon)</h3>
+                <p id="longitudeData">--.------</p>
             </div>
             <div class="data-card">
                 <h3>Batarya Seviyesi</h3>
@@ -148,6 +160,107 @@
         <p class="last-update-text">Son Güncelleme: <span id="lastUpdateTime">Bekleniyor...</span></p>
     </div>
 
-    
-    </body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCU85mN6BRISy_G-_T3KgkqqFg0TbPQrQs",
+            authDomain: "gokborutulpar-dc0a5.firebaseapp.com",
+            databaseURL: "https://gokborutulpar-dc0a5-default-rtdb.firebaseio.com",
+            projectId: "gokborutulpar-dc0a5",
+            storageBucket: "gokborutulpar-dc0a5.firebasestorage.app",
+            messagingSenderId: "612876155607",
+            appId: "1:612876155607:web:3df297b797489559b50e92",
+            measurementId: "G-GVDR2NQ435"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const analytics = getAnalytics(app);
+
+        // Get references to HTML elements
+        const connectionStatusIndicator = document.getElementById('connectionStatusIndicator');
+        const connectionStatusMessage = document.getElementById('connectionStatusMessage');
+        const fireDetectedData = document.getElementById('fireDetectedData');
+        const alarmCategoryData = document.getElementById('alarmCategoryData');
+        const confidenceData = document.getElementById('confidenceData');
+        const detectionTimeData = document.getElementById('detectionTimeData');
+        const latitudeData = document.getElementById('latitudeData');
+        const longitudeData = document.getElementById('longitudeData');
+        const batteryData = document.getElementById('batteryData');
+        const lastUpdateTime = document.getElementById('lastUpdateTime');
+
+        // Reference to your Firebase 'veri' node
+        const veriRef = ref(database, 'veri');
+
+        // Listen for data changes
+        onValue(veriRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                // Update connection status
+                connectionStatusIndicator.classList.add('connected');
+                connectionStatusMessage.textContent = 'Firebase\'e Bağlı';
+
+                // Update Fire/Smoke Detection Status
+                const fireDetectedInLastFrame = data.current_system_status?.fire_detected_in_last_frame;
+                fireDetectedData.textContent = fireDetectedInLastFrame ? 'Algılandı!' : 'Normal';
+                if (fireDetectedInLastFrame) {
+                    fireDetectedData.classList.add('fire-true');
+                } else {
+                    fireDetectedData.classList.remove('fire-true');
+                }
+
+                // Update Alarm Details
+                const lastAlarmDetails = data.last_alarm_details;
+                if (lastAlarmDetails) {
+                    alarmCategoryData.textContent = lastAlarmDetails.category || '--';
+                    confidenceData.textContent = `${(parseFloat(lastAlarmDetails.confidence) * 100).toFixed(1)} %` || '-- %';
+                    
+                    const detectionTime = lastAlarmDetails.detection_time;
+                    if (detectionTime) {
+                        const date = new Date(detectionTime);
+                        detectionTimeData.textContent = date.toLocaleString('tr-TR');
+                    } else {
+                        detectionTimeData.textContent = 'Bilinmiyor';
+                    }
+                } else {
+                    alarmCategoryData.textContent = '--';
+                    confidenceData.textContent = '-- %';
+                    detectionTimeData.textContent = 'Bilinmiyor';
+                }
+
+                // Update GPS Data
+                const gpsData = data.gps;
+                if (gpsData) {
+                    latitudeData.textContent = parseFloat(gpsData.latitude).toFixed(6) || '--.------';
+                    longitudeData.textContent = parseFloat(gpsData.longitude).toFixed(6) || '--.------';
+                } else {
+                    latitudeData.textContent = '--.------';
+                    longitudeData.textContent = '--.------';
+                }
+
+                // Update Battery Data (assuming it's directly under 'veri' or 'current_system_status')
+                // Adjust this line if 'battery' is nested differently in your actual data
+                batteryData.textContent = `${data.battery || '--'} %`; 
+
+                // Update last update time
+                lastUpdateTime.textContent = new Date().toLocaleString('tr-TR');
+
+            } else {
+                connectionStatusIndicator.classList.remove('connected');
+                connectionStatusMessage.textContent = 'Veri Bulunamadı veya Bağlantı Kesildi';
+            }
+        }, (error) => {
+            console.error("Firebase Veri Okuma Hatası: ", error);
+            connectionStatusIndicator.classList.remove('connected');
+            connectionStatusMessage.textContent = 'Bağlantı Hatası';
+            lastUpdateTime.textContent = 'Hata!';
+        });
+    </script>
+</body>
 </html>
