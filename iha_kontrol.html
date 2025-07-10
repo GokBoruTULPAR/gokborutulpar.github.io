@@ -160,91 +160,96 @@
         <p class="last-update-text">Son Güncelleme: <span id="lastUpdateTime">Bekleniyor...</span></p>
     </div>
 
-    <script type="module">
-        
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+   <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
-      
-        const firebaseConfig = {
-            apiKey: "AIzaSyCU85mN6BRISy_G-_T3KgkqqFg0TbPQrQs",
-            authDomain: "gokborutulpar-dc0a5.firebaseapp.com",
-            databaseURL: "https://gokborutulpar-dc0a5-default-rtdb.firebaseio.com",
-            projectId: "gokborutulpar-dc0a5",
-            storageBucket: "gokborutulpar-dc0a5.firebasestorage.app",
-            messagingSenderId: "612876155607",
-            appId: "1:612876155607:web:3df297b797489559b50e92",
-            measurementId: "G-GVDR2NQ435"
-        };
+const firebaseConfig = {
+    apiKey: "AIzaSyCU85mN6BRISy_G-_T3KgkqqFg0TbPQrQs",
+    authDomain: "gokborutulpar-dc0a5.firebaseapp.com",
+    databaseURL: "https://gokborutulpar-dc0a5-default-rtdb.firebaseio.com",
+    projectId: "gokborutulpar-dc0a5",
+    storageBucket: "gokborutulpar-dc0a5.firebasestorage.app",
+    messagingSenderId: "612876155607",
+    appId: "1:612876155607:web:3df297b797489559b50e92",
+    measurementId: "G-GVDR2NQ435"
+};
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const analytics = getAnalytics(app);
 
-        // Get references to HTML elements
-        const connectionStatusIndicator = document.getElementById('connectionStatusIndicator');
-        const connectionStatusMessage = document.getElementById('connectionStatusMessage');
-        const fireDetectedData = document.getElementById('fireDetectedData');
-        const alarmCategoryData = document.getElementById('alarmCategoryData');
-        const confidenceData = document.getElementById('confidenceData');
-        const detectionTimeData = document.getElementById('detectionTimeData');
-        const latitudeData = document.getElementById('latitudeData');
-        const longitudeData = document.getElementById('longitudeData');
-        const batteryData = document.getElementById('batteryData');
-        const lastUpdateTime = document.getElementById('lastUpdateTime');
+// HTML element referansları
+const connectionStatusIndicator = document.getElementById('connectionStatusIndicator');
+const connectionStatusMessage = document.getElementById('connectionStatusMessage');
+const fireDetectedData = document.getElementById('fireDetectedData');
+const alarmCategoryData = document.getElementById('alarmCategoryData');
+const confidenceData = document.getElementById('confidenceData');
+const detectionTimeData = document.getElementById('detectionTimeData');
+const latitudeData = document.getElementById('latitudeData');
+const longitudeData = document.getElementById('longitudeData');
+const batteryData = document.getElementById('batteryData');
+const lastUpdateTime = document.getElementById('lastUpdateTime');
 
-        // Reference to your Firebase 'veri' node
-    const veriRef = ref(database, 'veri'); // 'veri' ana düğümünü dinliyoruz
+// Firebase veri referansı
+const veriRef = ref(database, 'veri');
 
-// Listen for data changes
 onValue(veriRef, (snapshot) => {
-    const data = snapshot.val(); // 'veri' altındaki tüm veriyi alır
-    if (data) {
-        // ... (bağlantı durumu güncellemeleri)
+    const data = snapshot.val();
 
-        // fire_detected_in_last_frame -> Duman/Ateş Algılama
+    if (data) {
+        // Bağlantı durumu güncellemesi
+        connectionStatusIndicator.classList.add("connected");
+        connectionStatusMessage.textContent = "Firebase'e Bağlandı";
+
+        // Ateş algılama durumu
         const fireDetectedInLastFrame = data.current_system_status?.fire_detected_in_last_frame;
         fireDetectedData.textContent = fireDetectedInLastFrame ? 'Algılandı!' : 'Normal';
-        if (fireDetectedInLastFrame) {
-            fireDetectedData.classList.add('fire-true');
-        } else {
-            fireDetectedData.classList.remove('fire-true');
-        }
+        fireDetectedData.classList.toggle('fire-true', fireDetectedInLastFrame);
 
-        // last_alarm_details -> Alarm Kategorisi, Güvenirlik, Algılama Zamanı
-        const lastAlarmDetails = data.last_alarm_details; // 'veri/last_alarm_details' buradan alınır
+        // Alarm detayları
+        const lastAlarmDetails = data.last_alarm_details;
         if (lastAlarmDetails) {
-            alarmCategoryData.textContent = lastAlarmDetails.category || '--'; // 'category'
-            confidenceData.textContent = `${(parseFloat(lastAlarmDetails.confidence) * 100).toFixed(1)} %` || '-- %'; // 'confidence'
-            
-            const detectionTime = lastAlarmDetails.detection_time; // 'detection_time'
+            alarmCategoryData.textContent = lastAlarmDetails.category || '--';
+            confidenceData.textContent = lastAlarmDetails.confidence
+                ? `${(parseFloat(lastAlarmDetails.confidence) * 100).toFixed(1)} %`
+                : '-- %';
+
+            const detectionTime = lastAlarmDetails.detection_time;
             if (detectionTime) {
                 const date = new Date(detectionTime);
                 detectionTimeData.textContent = date.toLocaleString('tr-TR');
+                lastUpdateTime.textContent = date.toLocaleString('tr-TR');
             } else {
                 detectionTimeData.textContent = 'Bilinmiyor';
+                lastUpdateTime.textContent = 'Bilinmiyor';
             }
-        } // ... else kısmı
+        }
 
-        // gps -> Enlem, Boylam
-        const gpsData = data.gps; // 'veri/gps' buradan alınır (veya current_system_status altından)
-        
+        // GPS verisi
+        const gpsData = data.gps || data.current_system_status?.gps;
         if (gpsData) {
-            latitudeData.textContent = parseFloat(gpsData.latitude).toFixed(6) || '--.------';
-            longitudeData.textContent = parseFloat(gpsData.longitude).toFixed(6) || '--.------';
+            latitudeData.textContent = gpsData.latitude ? parseFloat(gpsData.latitude).toFixed(6) : '--.------';
+            longitudeData.textContent = gpsData.longitude ? parseFloat(gpsData.longitude).toFixed(6) : '--.------';
         } else {
             latitudeData.textContent = '--.------';
             longitudeData.textContent = '--.------';
         }
 
-        /
-
-
-        // ... (son güncelleme zamanı)
-    } // ... else kısmı (data yoksa)
+        // Batarya (opsiyonel)
+        const batteryLevel = data.battery_level || data.current_system_status?.battery;
+        batteryData.textContent = batteryLevel ? `${batteryLevel} %` : '-- %';
+    } else {
+        connectionStatusIndicator.classList.remove("connected");
+        connectionStatusMessage.textContent = "Veri Alınamadı!";
+    }
+}, (error) => {
+    console.error("Firebase'den veri alınırken hata oluştu:", error);
+    connectionStatusIndicator.classList.remove("connected");
+    connectionStatusMessage.textContent = "Bağlantı Hatası!";
 });
-    </script>
+</script>
+
 </body>
 </html>
