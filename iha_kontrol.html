@@ -230,12 +230,7 @@ onValue(veriRef, (snapshot) => {
 
         // gps -> Enlem, Boylam
         const gpsData = data.gps; // 'veri/gps' buradan alınır (veya current_system_status altından)
-        // **Önemli not:** Sizin örnek kodunuzda GPS verisi hem `current_system_status` altında hem de `last_alarm_details` altında var.
-        // Web arayüzü kodu `data.gps` olarak direkt 'veri'nin altından bakıyor.
-        // Eğer GPS verisi sadece `current_system_status.gps` altında ise,
-        // `const gpsData = data.current_system_status?.gps;` olarak düzeltmeniz gerekir.
-        // Mevcut yapıda, Firebase Realtime Database ekran görüntünüzdeki gibi 'veri' altında ayrı bir 'gps' düğümü olduğunu varsaydım.
-        // Eğer bu 'gps' düğümü yoksa ve sadece 'current_system_status' altındaysa, JS kodunu düzeltmelisiniz.
+        
         if (gpsData) {
             latitudeData.textContent = parseFloat(gpsData.latitude).toFixed(6) || '--.------';
             longitudeData.textContent = parseFloat(gpsData.longitude).toFixed(6) || '--.------';
