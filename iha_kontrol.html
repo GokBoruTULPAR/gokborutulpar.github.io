@@ -161,12 +161,12 @@
     </div>
 
     <script type="module">
-        // Import the functions you need from the SDKs you need
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
 
-        // Your web app's Firebase configuration
+      
         const firebaseConfig = {
             apiKey: "AIzaSyCU85mN6BRISy_G-_T3KgkqqFg0TbPQrQs",
             authDomain: "gokborutulpar-dc0a5.firebaseapp.com",
@@ -196,71 +196,60 @@
         const lastUpdateTime = document.getElementById('lastUpdateTime');
 
         // Reference to your Firebase 'veri' node
-        const veriRef = ref(database, 'veri');
+    const veriRef = ref(database, 'veri'); // 'veri' ana düğümünü dinliyoruz
 
-        // Listen for data changes
-        onValue(veriRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                // Update connection status
-                connectionStatusIndicator.classList.add('connected');
-                connectionStatusMessage.textContent = 'Firebase\'e Bağlı';
+// Listen for data changes
+onValue(veriRef, (snapshot) => {
+    const data = snapshot.val(); // 'veri' altındaki tüm veriyi alır
+    if (data) {
+        // ... (bağlantı durumu güncellemeleri)
 
-                // Update Fire/Smoke Detection Status
-                const fireDetectedInLastFrame = data.current_system_status?.fire_detected_in_last_frame;
-                fireDetectedData.textContent = fireDetectedInLastFrame ? 'Algılandı!' : 'Normal';
-                if (fireDetectedInLastFrame) {
-                    fireDetectedData.classList.add('fire-true');
-                } else {
-                    fireDetectedData.classList.remove('fire-true');
-                }
+        // fire_detected_in_last_frame -> Duman/Ateş Algılama
+        const fireDetectedInLastFrame = data.current_system_status?.fire_detected_in_last_frame;
+        fireDetectedData.textContent = fireDetectedInLastFrame ? 'Algılandı!' : 'Normal';
+        if (fireDetectedInLastFrame) {
+            fireDetectedData.classList.add('fire-true');
+        } else {
+            fireDetectedData.classList.remove('fire-true');
+        }
 
-                // Update Alarm Details
-                const lastAlarmDetails = data.last_alarm_details;
-                if (lastAlarmDetails) {
-                    alarmCategoryData.textContent = lastAlarmDetails.category || '--';
-                    confidenceData.textContent = `${(parseFloat(lastAlarmDetails.confidence) * 100).toFixed(1)} %` || '-- %';
-                    
-                    const detectionTime = lastAlarmDetails.detection_time;
-                    if (detectionTime) {
-                        const date = new Date(detectionTime);
-                        detectionTimeData.textContent = date.toLocaleString('tr-TR');
-                    } else {
-                        detectionTimeData.textContent = 'Bilinmiyor';
-                    }
-                } else {
-                    alarmCategoryData.textContent = '--';
-                    confidenceData.textContent = '-- %';
-                    detectionTimeData.textContent = 'Bilinmiyor';
-                }
-
-                // Update GPS Data
-                const gpsData = data.gps;
-                if (gpsData) {
-                    latitudeData.textContent = parseFloat(gpsData.latitude).toFixed(6) || '--.------';
-                    longitudeData.textContent = parseFloat(gpsData.longitude).toFixed(6) || '--.------';
-                } else {
-                    latitudeData.textContent = '--.------';
-                    longitudeData.textContent = '--.------';
-                }
-
-                // Update Battery Data (assuming it's directly under 'veri' or 'current_system_status')
-                // Adjust this line if 'battery' is nested differently in your actual data
-                batteryData.textContent = `${data.battery || '--'} %`; 
-
-                // Update last update time
-                lastUpdateTime.textContent = new Date().toLocaleString('tr-TR');
-
+        // last_alarm_details -> Alarm Kategorisi, Güvenirlik, Algılama Zamanı
+        const lastAlarmDetails = data.last_alarm_details; // 'veri/last_alarm_details' buradan alınır
+        if (lastAlarmDetails) {
+            alarmCategoryData.textContent = lastAlarmDetails.category || '--'; // 'category'
+            confidenceData.textContent = `${(parseFloat(lastAlarmDetails.confidence) * 100).toFixed(1)} %` || '-- %'; // 'confidence'
+            
+            const detectionTime = lastAlarmDetails.detection_time; // 'detection_time'
+            if (detectionTime) {
+                const date = new Date(detectionTime);
+                detectionTimeData.textContent = date.toLocaleString('tr-TR');
             } else {
-                connectionStatusIndicator.classList.remove('connected');
-                connectionStatusMessage.textContent = 'Veri Bulunamadı veya Bağlantı Kesildi';
+                detectionTimeData.textContent = 'Bilinmiyor';
             }
-        }, (error) => {
-            console.error("Firebase Veri Okuma Hatası: ", error);
-            connectionStatusIndicator.classList.remove('connected');
-            connectionStatusMessage.textContent = 'Bağlantı Hatası';
-            lastUpdateTime.textContent = 'Hata!';
-        });
+        } // ... else kısmı
+
+        // gps -> Enlem, Boylam
+        const gpsData = data.gps; // 'veri/gps' buradan alınır (veya current_system_status altından)
+        // **Önemli not:** Sizin örnek kodunuzda GPS verisi hem `current_system_status` altında hem de `last_alarm_details` altında var.
+        // Web arayüzü kodu `data.gps` olarak direkt 'veri'nin altından bakıyor.
+        // Eğer GPS verisi sadece `current_system_status.gps` altında ise,
+        // `const gpsData = data.current_system_status?.gps;` olarak düzeltmeniz gerekir.
+        // Mevcut yapıda, Firebase Realtime Database ekran görüntünüzdeki gibi 'veri' altında ayrı bir 'gps' düğümü olduğunu varsaydım.
+        // Eğer bu 'gps' düğümü yoksa ve sadece 'current_system_status' altındaysa, JS kodunu düzeltmelisiniz.
+        if (gpsData) {
+            latitudeData.textContent = parseFloat(gpsData.latitude).toFixed(6) || '--.------';
+            longitudeData.textContent = parseFloat(gpsData.longitude).toFixed(6) || '--.------';
+        } else {
+            latitudeData.textContent = '--.------';
+            longitudeData.textContent = '--.------';
+        }
+
+        /
+
+
+        // ... (son güncelleme zamanı)
+    } // ... else kısmı (data yoksa)
+});
     </script>
 </body>
 </html>
