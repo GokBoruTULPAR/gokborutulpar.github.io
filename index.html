@@ -13,76 +13,93 @@
   <title>GÖKBÖRÜ | Özel Drone ve Takımımız</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
-
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
-
+  <div id="splash"><div class="splash-title">GÖKBÖRÜ-TULPAR</div></div>
   <div id="particles-js"></div>
-
-  <div class="main-content">
-    <header>
+  <header class="main-header">
+    <nav class="navbar" role="navigation" aria-label="Ana menü">
       <a href="#LOGO" class="logo" aria-label="Anasayfa">
-        <img src="assets/Logo.png" alt="Gökbörü Tulpar Logo" style="height:169px;">
+        <img src="assets/Logo.png" alt="Gökbörü Tulpar Logo" class="logo-img" style="height:64px; width:auto;">
       </a>
-      <p>Yerli ve Özgün İHA Teknolojisi</p>
-    </header>
-
-    <button id="menu-toggle" aria-label="Menüyü aç/kapat">☰</button>
-    <nav class="nav-links" role="navigation" aria-label="Ana menü">
-      <a href="#drone">Drone</a>
-      <a href="#team">Takım</a>
-      <a href="#contact">İletişim</a>
-      <a href="iha_kontrol.html">İha Kontrol</a>
+      <button id="menu-toggle" class="menu-toggle" aria-label="Menüyü aç/kapat">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links">
+        <li><a href="#drone">Drone</a></li>
+        <li><a href="#team">Takım</a></li>
+        <li><a href="#contact">İletişim</a></li>
+        <li><a href="iha_kontrol.html">İha Kontrol</a></li>
+      </ul>
+      <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Tema değiştir">
+        <i class="fas fa-moon"></i>
+      </button>
     </nav>
-
-    <section id="drone">
-      <h2 class="typewriter">GökBörü-TULPAR</h2>
+  </header>
+  <section class="hero">
+    <h1 class="hero-title">GÖKBÖRÜ-TULPAR</h1>
+    <p class="hero-desc">Geleceğin İHA’sı ile Ormanlarımız Güvende!</p>
+    <div class="hero-icons">
+      <span><i class="fas fa-brain"></i> Yapay Zeka</span>
+      <span><i class="fas fa-wifi"></i> Gerçek Zamanlı Veri</span>
+      <span><i class="fas fa-robot"></i> Otonom Uçuş</span>
+      <span><i class="fas fa-leaf"></i> Çevre Dostu</span>
+    </div>
+  </section>
+  <main>
+    <section id="drone" class="section drone-section">
+      <h2 class="section-title">Drone Özellikleri</h2>
       <div class="drone-features">
         <div class="feature-card">
+          <i class="fas fa-helicopter feature-icon"></i>
           <h3>Altı Motorlu Hexacopter</h3>
           <p>Yangın algılama ve müdahale için optimize edilmiş döner kanatlı sistem.</p>
         </div>
         <div class="feature-card">
+          <i class="fas fa-cubes feature-icon"></i>
           <h3>Katlanabilir Tasarım</h3>
           <p>Taşınabilirlik ve hızlı kurulum için modüler yapı.</p>
         </div>
         <div class="feature-card">
+          <i class="fas fa-brain feature-icon"></i>
           <h3>Yapay Zeka Görüntü İşleme</h3>
           <p>Yangın tespiti ve sınıflandırmasında yüksek doğruluk.</p>
         </div>
         <div class="feature-card">
+          <i class="fas fa-wifi feature-icon"></i>
           <h3>Anlık Veri Aktarımı</h3>
           <p>Gelişmiş sensörlerden gelen veriler Github'da yayımlanıyor.</p>
         </div>
       </div>
     </section>
-
-    <section id="team">
-      <h2>Takım Düzeni</h2>
+    <section id="team" class="section team-section">
+      <h2 class="section-title">Takım Düzeni</h2>
       <div class="team-members">
-        <div class="team-card">
+        <div class="team-card advisor">
+          <span class="team-badge">Takım Danışmanı</span>
           <h3>Öznür Pamuk</h3>
-          <p>Takım Danışmanı,Takım İletişim Sorumlusu</p>
+          <p>Takım Danışmanı, Takım İletişim Sorumlusu</p>
         </div>
-        <div class="team-card">
+        <div class="team-card captain">
+          <span class="team-badge">Takım Kaptanı</span>
           <h3>Ömer Faruk Coşkun</h3>
-          <p>Takım Kaptanı,Yazılım Sorumlusu</p>
+          <p>Takım Kaptanı, Yazılım Sorumlusu</p>
         </div>
         <div class="team-card">
           <h3>Deniz Boz</h3>
-          <p>Tasarım ekibi</p>
+          <p>Tasarım Ekibi</p>
         </div>
         <div class="team-card">
           <h3>Göktuğ Erol Coşkun</h3>
-          <p>Tasarım ekibi</p>
+          <p>Tasarım Ekibi</p>
         </div>
         <div class="team-card">
           <h3>Uygar Beşli</h3>
-          <p>Yazılım sorumlusu</p>
+          <p>Yazılım Sorumlusu</p>
         </div>
         <div class="team-card">
           <h3>Serra Ülker</h3>
@@ -90,33 +107,31 @@
         </div>
         <div class="team-card">
           <h3>Yavuz Kara</h3>
-          <p>Yazılım Sorumlusu,Takım Pilotu</p>
+          <p>Yazılım Sorumlusu, Takım Pilotu</p>
         </div>
       </div>
     </section>
-
-    <section id="contact" class="contact">
-      <h2>İletişim</h2>
-      <p style="text-align:center; margin-bottom: 20px;">
+    <section id="contact" class="section contact-section">
+      <h2 class="section-title">İletişim</h2>
+      <p class="contact-desc">
         Bizimle iletişime geçmek için aşağıdaki sosyal medya hesaplarımızı ziyaret edebilirsiniz.
       </p>
-      <div class="social-icons" style="text-align:center;">
+      <div class="social-icons">
         <a href="https://www.instagram.com/gokburu_TULPAR" target="_blank" rel="noopener" aria-label="Instagram">
-          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" />
+          <i class="fab fa-instagram"></i>
         </a>
         <a href="mailto:gokborutalpur@gmail.com" aria-label="E-posta">
-          <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Mail" />
+          <i class="fas fa-envelope"></i>
         </a>
       </div>
     </section>
-
-    <footer>
-      &copy; 2025 GÖKBÖRÜ-TULPAR. Tüm hakları saklıdır.
-    </footer>
-  </div>
-
+  </main>
+  <footer class="main-footer">
+    <div class="footer-content">
+      <span>&copy; 2025 GÖKBÖRÜ-TULPAR. Tüm hakları saklıdır.</span>
+      <span> | <a href="#" class="footer-link">Gizlilik Politikası</a></span>
+    </div>
+  </footer>
   <script src="js/script.js"></script>
-
 </body>
 </html>
-<!-- Made by KrayirOs and Vindicita <3-->
